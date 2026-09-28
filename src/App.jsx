@@ -1,7 +1,10 @@
 import { useState } from "react";
 import Header from "./Components/Header";
 import BalanceSummary from "./Components/BalanceSummary";
+import TransactionForm from "./Components/TransactionForm";
 import "./App.css";
+
+const CATEGORIES = ["Food", "Transport", "Shopping", "Bills", "Salary", "Other"];
 
 function App() {
   const [transactions, setTransactions] = useState([
@@ -9,10 +12,15 @@ function App() {
     { id: 2, description: "Groceries", amount: 150, category: "Food", type: "expense", date: "2026-09-05" },
   ]);
 
+  const addTransaction = (transaction) => {
+    setTransactions([transaction, ...transactions]);
+  };
+
   return (
     <div className="app">
       <Header />
       <BalanceSummary transactions={transactions} />
+      <TransactionForm onAdd={addTransaction} categories={CATEGORIES} />
     </div>
   );
 }
