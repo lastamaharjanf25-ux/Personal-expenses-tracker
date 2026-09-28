@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import BalanceSummary from "./components/BalanceSummary";
 import TransactionForm from "./components/TransactionForm";
@@ -8,10 +8,14 @@ import "./App.css";
 const CATEGORIES = ["Food", "Transport", "Shopping", "Bills", "Salary", "Other"];
 
 function App() {
-  const [transactions, setTransactions] = useState([
-    { id: 1, description: "Salary", amount: 1000, category: "Salary", type: "income", date: "2026-09-01" },
-    { id: 2, description: "Groceries", amount: 150, category: "Food", type: "expense", date: "2026-09-05" },
-  ]);
+  const [transactions, setTransactions] = useState(() => {
+    const saved = localStorage.getItem("transactions");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  }, [transactions]);
 
   const addTransaction = (transaction) => {
     setTransactions([transaction, ...transactions]);
